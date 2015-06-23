@@ -18,14 +18,30 @@ class BaseService
 
 
 
-	def self.update(record: nil, params: {})		
+	def self.update(record: nil, params: {})
 		record = service_model.find(params[:id]) if record.nil?
 		object = apply_params(object: record, params: params)
 		return validate_and_save(object)
 	end
 
-	def self.validate(record: nil, params: {})		
-		print "FUCK YEAH!!"
+	def self.validate_present_attributes(record: nil, params: {})
+		record = service_model.new() if record.nil?
+		object = apply_params(object: record, params: params)
+		
+
+		if !object.valid?
+			errors = object.errors.dup
+			object.errors.clear
+			params.each do |key, value|
+				if errors[key].present?
+					errors[key].each do |error|
+						object.errors.add(key.to_sym, error)
+					end
+				end
+			end
+			return {errors: object.errors.full_messages}
+		end
+		return true
 	end
 
 	private
