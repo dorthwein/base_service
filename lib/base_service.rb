@@ -24,7 +24,9 @@ class BaseService
 		return validate_and_save(object)
 	end
 
-
+	def self.validate(record: nil, params: {})		
+		print "FUCK YEAH!!"
+	end
 
 	private
 
