@@ -28,6 +28,7 @@ class BaseService
 		record = service_model.new() if record.nil?
 		object = apply_params(object: record, params: params)
 		
+
 		if !object.valid?
 			errors = object.errors.dup
 			object.errors.clear
@@ -38,9 +39,11 @@ class BaseService
 					end
 				end
 			end
-			return {errors: object.errors.full_messages}
+			
 		end
-		return object
+		
+		return object if object.errors == nil || object.errors.size == 0
+		return {errors: object.errors.full_messages} 		
 	end
 
 	private
