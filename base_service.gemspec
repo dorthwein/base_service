@@ -7,8 +7,8 @@ require "base_service/version"
 Gem::Specification.new do |s|
   s.name        = "base_service"
   s.version     = BaseService::VERSION
-  s.authors     = ["TODO: Your name"]
-  s.email       = ["TODO: Your email"]
+  s.authors     = ["Daniel Orthwein", "DFO Enterprises, LLC"]
+  s.email       = ["dorthwein@gmail.com"]
   s.homepage    = "TODO"
   s.summary     = "TODO: Summary of BaseService."
   s.description = "TODO: Description of BaseService."
