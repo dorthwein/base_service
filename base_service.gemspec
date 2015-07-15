@@ -9,9 +9,9 @@ Gem::Specification.new do |s|
   s.version     = BaseService::VERSION
   s.authors     = ["Daniel Orthwein", "DFO Enterprises, LLC"]
   s.email       = ["dorthwein@gmail.com"]
-  s.homepage    = "TODO"
-  s.summary     = "TODO: Summary of BaseService."
-  s.description = "TODO: Description of BaseService."
+  s.homepage    = "http://www.theorthweins.com"
+  s.summary     = "A handy gem"
+  s.description = "Creates a nifty BaseService class"
 
   s.files = Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.rdoc"]
   s.test_files = Dir["test/**/*"]
