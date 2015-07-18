@@ -58,8 +58,8 @@ class BaseService
 		def self.clean_params(object: nil, params: {})
 			object = service_model if object.nil?
 			clean_params = {}
-			object.fields.each do |field|
-				clean_params[field[0].to_sym] = params[field[0].to_sym]
+			params.each do |key, value|
+				clean_params[key] = params[key] if object.try(key + '?'.to_sym)
 			end
 			return clean_params
 		end
