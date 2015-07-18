@@ -59,7 +59,7 @@ class BaseService
 			object = service_model if object.nil?
 			clean_params = {}
 			params.each do |key, value|
-				clean_params[key] = params[key] if object.try(key + '?'.to_sym)
+				clean_params[key] = params[key] if object.try((key + '?').to_sym)
 			end
 			return clean_params
 		end
