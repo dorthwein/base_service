@@ -12,7 +12,8 @@ class BaseService
 
 
 	def self.delete(record: nil, params: {})
-		record = service_model.find(params[:id]) if record.nil?
+		record = service_model.find(params[:id]) if record.nil? && !params[:id].nil?
+		record = service_model.find_by(params) if record.nil? && params[:id].nil?
 		return validate_and_destroy(record)
 	end
 
@@ -27,7 +28,7 @@ class BaseService
 	def self.validate_present_attributes(record: nil, params: {})
 		record = service_model.new() if record.nil?
 		object = apply_params(object: record, params: params)
-		
+
 
 		if !object.valid?
 			errors = object.errors.dup
@@ -39,11 +40,11 @@ class BaseService
 					end
 				end
 			end
-			
+
 		end
-		
+
 		return object if object.errors == nil || object.errors.size == 0
-		return {errors: object.errors.full_messages} 		
+		return {errors: object.errors.full_messages}
 	end
 
 	private
@@ -62,17 +63,17 @@ class BaseService
 	        if object.valid?
 	        	object.save!
 				return object
-	        else 
+	        else
 	            return {errors: object.errors.full_messages}
 	        end
 		end
 
 
 		# Validates & Destroys Record - if destroy fails, returns Errors
-		def self.validate_and_destroy(object)			
+		def self.validate_and_destroy(object)
 	        if object.destroy!
 	            return {}
-	        else 
+	        else
 	            return {errors: object.errors.full_messages}
 	        end
 		end
@@ -84,9 +85,3 @@ class BaseService
 		end
 
 end
-
-
-
-
-
-
