@@ -1,6 +1,3 @@
-# module BaseService
-# end
-
 class BaseService
 	# Create new record
 	def self.create(record: nil, params: {})
@@ -60,8 +57,8 @@ class BaseService
 		def self.clean_params(object: nil, params: {})
 			object = service_model if object.nil?
 			clean_params = {}
-			params.each do |key, value|
-				clean_params[key] = params[key] if object.try((key + '?').to_sym)
+			object.fields.each do |field|
+				clean_params[field[0].to_sym] = params[field[0].to_sym] if params[field[0].to_sym].present? || params[field[0].to_sym] == false
 			end
 			return clean_params
 		end
@@ -75,10 +72,11 @@ class BaseService
 			return service_model.find(params[:id]) if !params[:id].nil?
 
 			# If param keys present, find_by params
-			return service_model.find_by(params) if params.keys.any?
+			record = service_model.find_by(params) if params.keys.any? rescue nil
 
 			# If no params, return new instace
-			return service_model.new()
+			record = service_model.new() if record.nil?
+			return record
 		end
 		# Applies attributes to record if present
 		def self.apply_params(object: nil, params: {})
