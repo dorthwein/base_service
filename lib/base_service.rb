@@ -100,7 +100,7 @@ class BaseService
 
 		# Validates & Destroys Record - if destroy fails, returns Errors
 		def self.validate_and_destroy(object)
-	        if object.destroy
+	        if object.destroy!
 	            return {}
 	        else
 	            return {errors: object.errors.full_messages}
