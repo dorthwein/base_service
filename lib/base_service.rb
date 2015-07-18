@@ -4,6 +4,7 @@
 class BaseService
 	# Create new record
 	def self.create(record: nil, params: {})
+		params = clean_params(object: record, params: params)
 		record = service_model.new() if record.nil?
 		object = apply_params(object: record, params: params)
 		return validate_and_save(object)
@@ -12,6 +13,7 @@ class BaseService
 
 
 	def self.delete(record: nil, params: {})
+		params = clean_params(object: record, params: params)
 		record = service_model.find(params[:id]) if record.nil? && !params[:id].nil?
 		record = service_model.find_by(params) if record.nil? && params[:id].nil?
 		return validate_and_destroy(record)
@@ -20,15 +22,18 @@ class BaseService
 
 
 	def self.update(record: nil, params: {})
+		params = clean_params(object: record, params: params)
 		record = service_model.find(params[:id]) if record.nil?
 		object = apply_params(object: record, params: params)
 		return validate_and_save(object)
 	end
 
+
+
 	def self.validate_present_attributes(record: nil, params: {})
+		params = clean_params(object: record, params: params)
 		record = service_model.new() if record.nil?
 		object = apply_params(object: record, params: params)
-
 
 		if !object.valid?
 			errors = object.errors.dup
@@ -48,6 +53,16 @@ class BaseService
 	end
 
 	private
+
+		# Clean params so that only model attributes remain
+		def self.clean_params(object: nil, params: {})
+			object = service_model if object.nil?
+			clean_params = {}
+			object.fields.each do |field|
+				clean_params[field[0].to_sym] = params[field[0].to_sym]
+			end
+			return clean_params
+		end
 
 		# Applies attributes to record if present
 		def self.apply_params(object: nil, params: {})
@@ -83,5 +98,4 @@ class BaseService
 		def self.service_model
 			return self.to_s.reverse.sub('Service'.reverse, '').reverse.constantize
 		end
-
 end
