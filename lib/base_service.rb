@@ -5,7 +5,8 @@ class BaseService
 	# Create new record
 	def self.create(record: nil, params: {})
 		params = clean_params(object: record, params: params)
-		record = service_model.new() if record.nil?
+		record = set_record(record: record, params: params)
+
 		object = apply_params(object: record, params: params)
 		return validate_and_save(object)
 	end
@@ -14,8 +15,8 @@ class BaseService
 
 	def self.delete(record: nil, params: {})
 		params = clean_params(object: record, params: params)
-		record = service_model.find(params[:id]) if record.nil? && !params[:id].nil?
-		record = service_model.find_by(params) if record.nil? && params[:id].nil?
+		record = set_record(record: record, params: params)
+
 		return validate_and_destroy(record)
 	end
 
@@ -23,7 +24,8 @@ class BaseService
 
 	def self.update(record: nil, params: {})
 		params = clean_params(object: record, params: params)
-		record = service_model.find(params[:id]) if record.nil?
+		record = set_record(record: record, params: params)
+
 		object = apply_params(object: record, params: params)
 		return validate_and_save(object)
 	end
@@ -32,7 +34,7 @@ class BaseService
 
 	def self.validate_present_attributes(record: nil, params: {})
 		params = clean_params(object: record, params: params)
-		record = service_model.new() if record.nil?
+		record = service_model.new() if record.nil? # Note - not using set_record intentially
 		object = apply_params(object: record, params: params)
 
 		if !object.valid?
@@ -64,6 +66,20 @@ class BaseService
 			return clean_params
 		end
 
+		# Common method to initialize record
+		def self.set_record(record: nil, params: {})
+			# If record already set skip setting...
+			return record if !record.nil?
+
+			# If ID present, find_by id
+			return service_model.find(params[:id]) if !params[:id].nil?
+
+			# If param keys present, find_by params
+			return service_model.find_by(params) if params.keys.any?
+
+			# If no params, return new instace
+			return service_model.new()
+		end
 		# Applies attributes to record if present
 		def self.apply_params(object: nil, params: {})
 			object.fields.each do |field|
