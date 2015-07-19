@@ -1,4 +1,4 @@
-class BaseService
+class Mongoid::BaseService
 	# Create new record
 	def self.create(record: nil, params: {})
 		params = clean_params(object: record, params: params)
@@ -57,7 +57,7 @@ class BaseService
 		def self.clean_params(object: nil, params: {})
 			object = service_model if object.nil?
 			clean_params = {}
-			clean_params[:id] = params[:id] if !params[:id].nil?			
+			clean_params[:id] = params[:id] if !params[:id].nil?
 			object.fields.each do |field|
 				clean_params[field[0].to_sym] = params[field[0].to_sym] if params[field[0].to_sym].present? || params[field[0].to_sym] == false
 			end
