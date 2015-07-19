@@ -61,9 +61,6 @@ class BaseService
 		params.each do |key, value|
 			clean_params[key.to_sym] = params[key] if object.respond_to?(key.to_s + '=')
 		end
-		# object.fields.each do |field|
-		# 	clean_params[field[0].to_sym] = params[field[0].to_sym] if params[field[0].to_sym].present? || params[field[0].to_sym] == false
-		# end
 		return clean_params
 	end
 
@@ -88,9 +85,6 @@ class BaseService
 			setter = key.to_s + '='
 			object.send(setter, value) if object.respond_to?(setter)
 		end
-		# object.fields.each do |field|
-		# 	object.write_attribute(field[0].to_sym, params[field[0].to_sym]) if params[field[0].to_sym].present? || params[field[0].to_sym] == false
-		# end
 		return object
 	end
 
