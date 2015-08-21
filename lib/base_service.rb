@@ -83,7 +83,7 @@ class BaseService
 	def self.apply_params(object: nil, params: {})
 		params.each do |key, value|
 			setter = key.to_s + '='
-			object.send(setter, value) if object.respond_to?(setter)
+			object.send(setter, value) if object.respond_to?(setter) && setter.to_s != 'id' && setter.to_s != '_id'
 		end
 		return object
 	end
