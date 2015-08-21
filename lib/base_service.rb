@@ -2,7 +2,7 @@ class BaseService
 	# Create new record
 	def self.create(record: nil, params: {})
 		params = clean_params(object: record, params: params)
-		record = set_record(record: record, params: params)
+		record = service_model.new() if record.nil?
 
 		object = apply_params(object: record, params: params)
 		return validate_and_save(object)
