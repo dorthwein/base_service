@@ -70,7 +70,7 @@ class BaseService
 		return record if !record.nil?
 
 		# If ID present, find_by id
-		return service_model.find(params[:id]) if !params[:id].nil?
+		return service_model.find(params[:id]) if params[:id].present?
 
 		# If param keys present, find_by params
 		record = service_model.find_by(params) if params.keys.any? rescue nil
